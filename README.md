@@ -14,7 +14,9 @@ Depending on your inputs for mafioso/resources, this script will generate 1-3 fi
 ## Supported Commands
 **parse** - Tries to parse a log. Proper syntax & an example:
 > `ScotchLog parse` (NOTE: Grabs your most recent run. This should always work, or tell you why it didn't.)
+
 > `ScotchLog parse [ENDDATE] [NUMBEROFDAYS]` (NOTE: This feature is currently in beta. Might break!)
+
 > EXAMPLE -> `ScotchLog parse 20200614 3`
 
 **help** - Brings up a help screen
@@ -23,8 +25,10 @@ Depending on your inputs for mafioso/resources, this script will generate 1-3 fi
 
 **mafioso** - Toggles mafioso.txt output, for use with [https://kolmafioso.app/](KoLMafioso.app). Default is 'nosave'. Syntax:
 > `ScotchLog mafioso save` (If you want mafioso output.)
+
 > `ScotchLog mafioso nosave` (If you don't.)
 
 **resources** - Toggles resource tracking CSV output. Default is 'save'. Syntax:
 > `ScotchLog resources save` (If you want resource output.)
+
 > `ScotchLog resources nosave` (If you don't.)
