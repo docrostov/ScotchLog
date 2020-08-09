@@ -1,1 +1,0 @@
-/Users/aaron.mcguire/Library/Application Support/KoLmafia/scripts/ScotchLog.ash
