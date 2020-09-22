@@ -899,6 +899,9 @@ void parseLog(string runLog, string fName) {
             //   Before doing this, you have to make sure the line is long enough
             //   to possibly contain the player's name, tho. (Thanks, 3BH, for 
             //   helping track this weird error down.)
+			if (count(split_string(currLine,": ")) == 1){
+                continue;
+            }
             if (length(split_string(currLine,": ")[1]) > length(myName)){
                 if (substring(split_string(currLine,": ")[1],0,length(myName)) == myName){
                     // This detects if it's a statement about you! And this cuts out
