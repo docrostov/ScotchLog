@@ -285,6 +285,12 @@ static string [string] runList = {
 
 };
 
+static string [string] kingFreedList ={
+    "Took choice 1089/30: Perform Service": "CS",
+    "Took choice 1054/1: Yep"             : "ED",
+    "Freeing King Ralph"                  : "default"
+};
+
 // New record types for this parser's run report
 
 record pulls {
@@ -899,6 +905,9 @@ void parseLog(string runLog, string fName) {
             //   Before doing this, you have to make sure the line is long enough
             //   to possibly contain the player's name, tho. (Thanks, 3BH, for 
             //   helping track this weird error down.)
+			if (count(split_string(currLine,": ")) == 1){
+                continue;
+            }
             if (length(split_string(currLine,": ")[1]) > length(myName)){
                 if (substring(split_string(currLine,": ")[1],0,length(myName)) == myName){
                     // This detects if it's a statement about you! And this cuts out
@@ -1218,7 +1227,6 @@ void parseLog(string runLog, string fName) {
     }
 
     buffer_to_file(rlog,fName+currTurn+"turns.tsv");
-
     if (get_property("scotchLogResourceTracker")=="save"){
         buffer_to_file(runReport,fName+currTurn+"turns_runReport.tsv");
     }
@@ -1278,10 +1286,26 @@ void generateRawLog(string runEndDate, int numDays){
     replace(rawLog, 0, iSTART, "%%%%%%%%% START OF DAY #"+1+"\n");
 
     // Use "index_of()" to locate ascension end
-    int iPRISM = index_of(rawLog, "Freeing King Ralph");
+    int iPRISM = -1;
+
+    // Use 3BH's kingFreedList to reference end string for CS
+    foreach x, typ in kingFreedList {
+        int endRun = index_of(rawLog, x);
+        if (endRun > 0){
+            iPRISM = index_of(rawLog, x);
+        }
+    }
 
     // Error catching for users not including run ends.
-    if(iPRISM == -1){ abort("ERROR: This didn't include the end of a run. Try again?");}
+    if(iPRISM == -1){ 
+        // Add a catch for goo, where there is no explicit run-end in the log syntax
+        int endRun = index_of(rawLog, "Welcome to Valhalla!");
+        if (endRun > 0){
+            iPRISM = endRun;
+        } else {
+            abort("ERROR: This didn't include the end of a run. Try again?");
+        }
+    }
 
     // Use a replace function to remove all end-matter.
     replace(rawLog, iPRISM, length(rawLog), "[0] freeing the king");
