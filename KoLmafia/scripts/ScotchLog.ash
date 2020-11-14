@@ -757,10 +757,15 @@ void parseLog(string runLog, string fName) {
             // Catch to determine if the last turn was free. Have
             //   to also make sure it isn't using the info from 
             //   fake events, present in this exact line!
-            if (currTurn == grabNumber(currLine) && !isFake(split_string(currLine,"] ")[1])){
-                freeTurn = true;
+            if (currLine == "[0] FREEING THE DING DANG KING"){
+                // Trying to fix the error where Goo runs show a 0 turn ending.
+                print("Parsing a goo run, it looks like?", "blue");
             } else {
-                currTurn = grabNumber(currLine);
+                if (currTurn == grabNumber(currLine) && !isFake(split_string(currLine,"] ")[1])){
+                    freeTurn = true;
+                } else {
+                    currTurn = grabNumber(currLine);
+                }
             }
 
             // Unlike... basically everything else, I am using
@@ -1298,7 +1303,9 @@ void generateRawLog(string runEndDate, int numDays){
 
     // Error catching for users not including run ends.
     if(iPRISM == -1){ 
-        // Add a catch for goo, where there is no explicit run-end in the log syntax
+        // Add a catch for goo, where there is no explicit run-end in the log syntax. 
+        //   Helpfully, since this is astral, it should (?) help catch future paths 
+        //   where you don't free a king. We'll see!
         int endRun = index_of(rawLog, "Welcome to Valhalla!");
         if (endRun > 0){
             iPRISM = endRun;
@@ -1308,7 +1315,7 @@ void generateRawLog(string runEndDate, int numDays){
     }
 
     // Use a replace function to remove all end-matter.
-    replace(rawLog, iPRISM, length(rawLog), "[0] freeing the king");
+    replace(rawLog, iPRISM, length(rawLog), "[0] FREEING THE DING DANG KING");
 
     string newLog = rawLog.to_string();
 
