@@ -301,7 +301,7 @@ static string [string] kingFreedList ={
 
 
 static string [string] runStartList ={
-    "tutorial.php"                        : "firstRun",
+    "tutorial.php?action=toot"            : "firstRun",
     "Beginning New Ascension"             : "default"
 };
 
