@@ -1293,7 +1293,7 @@ void generateRawLog(string runEndDate, int numDays){
     int iSTART = index_of(rawLog, "Beginning New Ascension");
 
     // Capturing the start of a brand new account for BOFA purposes.
-    if(iSTART == -1){ iSTART = index_of(rawLog, "tutorial.php?action=toot");
+    if(iSTART == -1){ iSTART = index_of(rawLog, "tutorial.php");
 
     // Error catching for users not including run starts.
     if(iSTART == -1){abort("ERROR: This didn't include the beginning of a new run. Try again?");}
