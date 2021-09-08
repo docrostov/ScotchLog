@@ -121,6 +121,7 @@ static string [string] banisherList = {
     "classy monkey"                       : "item",   // PATH: class act
     "dirty stinkbomb"                     : "item",   // PATH: KOLHS
     "deathchucks"                         : "item",   // PATH: KOLHS
+    "B. L. A. R. T. SPRAY (WIDE)"         : "skill",  // PATH: Wildfire
 
                                                       // BANISHER SKILLS via IOTM ======
     "CREEPY GRIN"                         : "skill",  // 2007 vivala mask
@@ -134,7 +135,9 @@ static string [string] banisherList = {
     "THROW LATTE ON OPPONENT"             : "skill",  // 2018 latte lovers member card
     "REFLEX HAMMER"                       : "skill",  // 2019 doctor bag
     "SABER BANISH"                        : "skill",  // 2019 force saber; this is a custom remapping!!
-
+    "FEEL HATRED"                         : "skill",  // 2021 emotion chip
+    "SHOW YOUR BORING FAMILIAR PICTURES"  : "skill",  // 2021 familiar scrapbook
+	
                                                       // BANISHER ITEMS via IOTM =======
     "divine champagne popper"             : "item",   // 2008 libram of divine favors
     "crystal skill"                       : "item",   // 2011 tome of clip art
@@ -144,7 +147,7 @@ static string [string] banisherList = {
     "tennis ball"                         : "item",   // 2016 haunted doghouse
     "Daily Affirmation: Be a Mind Master" : "item",   // 2017 new-you affirmations
     "tryptophan dart"                     : "item",   // 2018 mechanical elf
-    "human musk"                          : "item",   // 2019 red-nosd snapper
+    "human musk"                          : "item",   // 2019 red-nosed snapper
 };
 
 static string [string] freeKillList = {
@@ -160,6 +163,7 @@ static string [string] freeKillList = {
     "GINGERBREAD MOB HIT"                 : "skill",  // 2016 gingerbread city
     "MISSILE LAUNCHER"                    : "skill",  // 2017 asdon-martin
     "CHEST X-RAY"                         : "skill",  // 2019 lil doc bag
+    "SHOCKING LICK"                       : "skill",  // 2021 power seed
 
                                                       // FREEKILL ITEMS via IOTM =======
     "superduperheated metal"              : "item",   // 2015 that 70s volcano
@@ -202,6 +206,7 @@ static string [string] copyList = {
     "DIGITIZE"                            : "skill",  // 2016 source terminal
     "LOV Enamorang"                       : "item",   // 2017 LOV tunnel
     "LECTURE ON RELATIVITY"               : "skill",  // 2019 pocket professor
+    "BACK-UP TO YOUR LAST ENEMY"          : "skill",  // 2021 backup camera
 
 
 };
@@ -259,7 +264,10 @@ static string [string] runList = {
     "Louder Than Bomb"                    : "item",   // 2013 smith's tome
     "tennis ball"                         : "item",   // 2016 haunted doghouse
     "human musk"                          : "item",   // 2019 red-nosd snapper
-
+    "B. L. A. R. T. SPRAY (WIDE)"         : "skill",  // PATH: Wildfire
+    "FEEL HATRED"                         : "skill",  // 2021 emotion chip
+    "SHOW YOUR BORING FAMILIAR PICTURES"  : "skill",  // 2021 familiar scrapbook
+	
                                                       // PATH & IOTM FREE-RUNS =========
     "ENSORCEL"                            : "skill",  // PATH: dark gyffte
     "giant eraser"                        : "item",   // PATH: kolhs
@@ -1283,6 +1291,9 @@ void generateRawLog(string runEndDate, int numDays){
 
     // Use "index_of()" to locate ascension start
     int iSTART = index_of(rawLog, "Beginning New Ascension");
+
+    // Capturing the start of a brand new account for BOFA purposes.
+    if(iSTART == -1){ iSTART = index_of(rawLog, "tutorial.php?action=toot");
 
     // Error catching for users not including run starts.
     if(iSTART == -1){abort("ERROR: This didn't include the beginning of a new run. Try again?");}
