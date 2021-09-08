@@ -299,6 +299,12 @@ static string [string] kingFreedList ={
     "Freeing King Ralph"                  : "default"
 };
 
+
+static string [string] runStartList ={
+    "tutorial.php"                        : "first run",
+    "Beginning New Ascension"             : "default"
+};
+
 // New record types for this parser's run report
 
 record pulls {
@@ -1290,11 +1296,16 @@ void generateRawLog(string runEndDate, int numDays){
     }
 
     // Use "index_of()" to locate ascension start
-    int iSTART = index_of(rawLog, "Beginning New Ascension");
-
-    // Capturing the start of a brand new account for BOFA purposes.
-    if(iSTART == -1){ iSTART = index_of(rawLog, "tutorial.php");
-
+    int iSTART = -1;
+	
+    // Use runStartList to reference starting strings 
+    foreach x, typ in runStartList {
+	int endRun= index_of(rawLog, x);
+	if (endRun > 0{
+		iSTART = index_of(rawLog, x);
+	}
+    }
+	
     // Error catching for users not including run starts.
     if(iSTART == -1){abort("ERROR: This didn't include the beginning of a new run. Try again?");}
 
