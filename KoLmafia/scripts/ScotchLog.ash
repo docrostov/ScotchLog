@@ -1300,11 +1300,10 @@ void generateRawLog(string runEndDate, int numDays){
 	
     // Use runStartList to reference starting strings 
     foreach x, typ in runStartList {
-	int endRun = index_of(rawLog, x);
-	    print("showing "+x+" for "+typ+"\n");
-	if (endRun > 0){
-	    iSTART = index_of(rawLog, x);
-	}
+	    int startRun = index_of(rawLog, x);
+	    if (startRun > 0){
+	        iSTART = index_of(rawLog, x);
+	    }
     }
 	
     // Error catching for users not including run starts.
