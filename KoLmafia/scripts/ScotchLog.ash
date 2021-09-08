@@ -1,7 +1,7 @@
 script <ScotchLog>;
 since r20267;
 
-string __scotchLog_version = "0.9";
+string __scotchLog_version = "0.95";
 
 // ==============================================================
 // ------------------------ INTRODUCTION ------------------------
@@ -1301,6 +1301,7 @@ void generateRawLog(string runEndDate, int numDays){
     // Use runStartList to reference starting strings 
     foreach x, typ in runStartList {
 	int endRun = index_of(rawLog, x);
+	    print("showing "+x+" for "+typ+"\n");
 	if (endRun > 0){
 	    iSTART = index_of(rawLog, x);
 	}
