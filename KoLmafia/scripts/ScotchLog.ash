@@ -301,8 +301,8 @@ static string [string] kingFreedList ={
 
 
 static string [string] runStartList ={
-    "tutorial.php?action=toot"            : "firstRun",
-    "Beginning New Ascension"             : "default"
+    "Beginning New Ascension"             : "default",
+    "tutorial.php"                        : "firstRun"
 };
 
 // New record types for this parser's run report
@@ -1297,9 +1297,6 @@ void generateRawLog(string runEndDate, int numDays){
 
     // Use "index_of()" to locate ascension start
     int iSTART = -1;
-
-    // very hacky, stupid way to get around this tutorial.php thing
-    rawLog = replace_string(rawLog, "tutorial.php","Beginning New Ascension");
 	
     // Use runStartList to reference starting strings 
     foreach x, typ in runStartList {
