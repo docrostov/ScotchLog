@@ -1,7 +1,7 @@
 script <ScotchLog>;
 since r20267;
 
-string __scotchLog_version = "0.95";
+string __scotchLog_version = "1.0";
 
 // ==============================================================
 // ------------------------ INTRODUCTION ------------------------
