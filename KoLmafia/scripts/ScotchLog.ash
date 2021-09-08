@@ -1299,7 +1299,7 @@ void generateRawLog(string runEndDate, int numDays){
     int iSTART = -1;
 
     // very hacky, stupid way to get around this tutorial.php thing
-    rawLog = replace_string(rawLog, "tutorial.php?action=toot","Beginning New Ascension");
+    rawLog = replace_string(rawLog, "tutorial.php","Beginning New Ascension");
 	
     // Use runStartList to reference starting strings 
     foreach x, typ in runStartList {
