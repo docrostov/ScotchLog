@@ -301,7 +301,7 @@ static string [string] kingFreedList ={
 
 
 static string [string] runStartList ={
-    "tutorial.php"                        : "first run",
+    "tutorial.php"                        : "firstRun",
     "Beginning New Ascension"             : "default"
 };
 
@@ -1300,9 +1300,9 @@ void generateRawLog(string runEndDate, int numDays){
 	
     // Use runStartList to reference starting strings 
     foreach x, typ in runStartList {
-	int endRun= index_of(rawLog, x);
-	if (endRun > 0{
-		iSTART = index_of(rawLog, x);
+	int endRun = index_of(rawLog, x);
+	if (endRun > 0){
+	    iSTART = index_of(rawLog, x);
 	}
     }
 	
