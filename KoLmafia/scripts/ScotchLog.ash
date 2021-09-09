@@ -1,7 +1,7 @@
 script <ScotchLog>;
 since r20267;
 
-string __scotchLog_version = "1.0";
+string __scotchLog_version = "1.1";
 
 // ==============================================================
 // ------------------------ INTRODUCTION ------------------------
@@ -302,7 +302,8 @@ static string [string] kingFreedList ={
 
 static string [string] runStartList ={
     "Beginning New Ascension"             : "default",
-    "tutorial.php"                        : "firstRun"
+    "tutorial.php"                        : "firstRun",
+    "use 1 nest egg"                      : "firstRun"
 };
 
 // New record types for this parser's run report
