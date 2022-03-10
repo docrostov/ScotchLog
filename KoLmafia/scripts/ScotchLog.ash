@@ -1,7 +1,7 @@
 script <ScotchLog>;
 since r20267;
 
-string __scotchLog_version = "1.1";
+string __scotchLog_version = "1.2";
 
 // ==============================================================
 // ------------------------ INTRODUCTION ------------------------
@@ -137,6 +137,7 @@ static string [string] banisherList = {
     "SABER BANISH"                        : "skill",  // 2019 force saber; this is a custom remapping!!
     "FEEL HATRED"                         : "skill",  // 2021 emotion chip
     "SHOW YOUR BORING FAMILIAR PICTURES"  : "skill",  // 2021 familiar scrapbook
+    "BOWL A CURVEBALL"                    : "skill",  // 2022 cosmic bowling ball
 	
                                                       // BANISHER ITEMS via IOTM =======
     "divine champagne popper"             : "item",   // 2008 libram of divine favors
@@ -267,6 +268,7 @@ static string [string] runList = {
     "B. L. A. R. T. SPRAY (WIDE)"         : "skill",  // PATH: Wildfire
     "FEEL HATRED"                         : "skill",  // 2021 emotion chip
     "SHOW YOUR BORING FAMILIAR PICTURES"  : "skill",  // 2021 familiar scrapbook
+    "BOWL A CURVEBALL"                    : "skill",  // 2022 cosmic bowling ball
 	
                                                       // PATH & IOTM FREE-RUNS =========
     "ENSORCEL"                            : "skill",  // PATH: dark gyffte
@@ -302,6 +304,7 @@ static string [string] kingFreedList ={
 
 static string [string] runStartList ={
     "Beginning New Ascension"             : "default",
+    "Ascend as a"                         : "backup",
     "tutorial.php"                        : "firstRun",
     "use 1 nest egg"                      : "firstRun"
 };
