@@ -1,7 +1,7 @@
 script <ScotchLog>;
 since r20267;
 
-string __scotchLog_version = "1.2";
+string __scotchLog_version = "1.3";
 
 // ==============================================================
 // ------------------------ INTRODUCTION ------------------------
@@ -122,6 +122,7 @@ static string [string] banisherList = {
     "dirty stinkbomb"                     : "item",   // PATH: KOLHS
     "deathchucks"                         : "item",   // PATH: KOLHS
     "B. L. A. R. T. SPRAY (WIDE)"         : "skill",  // PATH: Wildfire
+    "PUNT"                                : "skill",  // PATH: avatar of shadows over loathing
 
                                                       // BANISHER SKILLS via IOTM ======
     "CREEPY GRIN"                         : "skill",  // 2007 vivala mask
@@ -138,6 +139,7 @@ static string [string] banisherList = {
     "FEEL HATRED"                         : "skill",  // 2021 emotion chip
     "SHOW YOUR BORING FAMILIAR PICTURES"  : "skill",  // 2021 familiar scrapbook
     "BOWL A CURVEBALL"                    : "skill",  // 2022 cosmic bowling ball
+    "MONKEY SLAP"                         : "skill",  // 2023 cursed monkey's paw
 	
                                                       // BANISHER ITEMS via IOTM =======
     "divine champagne popper"             : "item",   // 2008 libram of divine favors
@@ -157,7 +159,9 @@ static string [string] freeKillList = {
                                                       // PATH & PERMASTANDARD INSTAKILLS
     "glark cable"                         : "item",   // 5/day freekill, red zeppelin
     "LIGHTNING STRIKE"                    : "skill",  // PATH: heavy rains
-
+    "FREE-FOR-ALL"                        : "skill",  // PATH: avatar of shadows over loathing
+    "FONDELUGE"                           : "skill",  // PATH: avatar of shadows over loathing
+    
                                                       // FREEKILL SKILLS via IOTM ======
     "SHATTERING PUNCH"                    : "skill",  // 2016 snojo
     "FIRE THE JOKESTER'S GUN"             : "skill",  // 2016 batfellow
@@ -165,6 +169,7 @@ static string [string] freeKillList = {
     "MISSILE LAUNCHER"                    : "skill",  // 2017 asdon-martin
     "CHEST X-RAY"                         : "skill",  // 2019 lil doc bag
     "SHOCKING LICK"                       : "skill",  // 2021 power seed
+    "SPIT JURASSIC ACID"                  : "skill",  // 2022 jurassic parka
 
                                                       // FREEKILL ITEMS via IOTM =======
     "superduperheated metal"              : "item",   // 2015 that 70s volcano
@@ -172,6 +177,8 @@ static string [string] freeKillList = {
     "replica bat-oomerang"                : "item",   // 2016 batfellow
     "Daily Affirmation: Think Win-Lose"   : "item",   // 2017 new-you affirmations
     "powdered madness"                    : "item",   // 2019 red-nosed snapper
+    "groveling gravel"                    : "item",   // 2023 rock garden guide
+    "shadow brick"                        : "item",   // 2023 closed-circuit payphone
 };
 
 static string [string] sniffList = {
@@ -184,10 +191,12 @@ static string [string] sniffList = {
     "GET A GOOD WHIFF OF THIS GUY"        : "skill",  // skill attained via nosy nose fam
     "PERCEIVE SOUL"                       : "skill",  // PATH: dark gyffte
     "MAKE FRIENDS"                        : "skill",  // PATH: avatar of sneaky pete
+    "MOTIF"                               : "skill",  // PATH: avatar of shadows over loathing
 
                                                       // IOTM-BASED SNIFFS =============
     "GALLAPAGOSIAN MATING CALL"           : "skill",  // bounty hunting reward
     "OFFER LATTE TO OPPONENT"             : "skill",  // 2018 latte lovers member card
+    "MONKEY POINT"                        : "skill",  // 2023 cursed monkey paw
 
 };
 
