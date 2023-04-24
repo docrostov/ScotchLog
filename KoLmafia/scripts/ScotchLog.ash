@@ -985,6 +985,11 @@ void parseLog(string runLog, string fName) {
                                     famLog[$familiar[ Pocket Professor ]].actions += 1;
                                 }
 
+                                // Increment stat gooso for gooso
+                                if (contains_text(ss, "CONVERT MATTER TO")){
+                                    famLog[$familiar[ Grey Goose ]].actions += 1;
+                                }
+
                                 // Increment runs for boots & banders. Note that 
                                 //   we also have to adjust to ensure they were 
                                 //   actually -free- runs, which we do up top.
@@ -1055,6 +1060,22 @@ void parseLog(string runLog, string fName) {
                 if (contains_text(currLine,"human musk")){
                     famLog[$familiar[ Red-Nosed Snapper ]].actions += 1;
                 }
+                
+                // Track when you get vampire vintner wines for tracking
+                if (contains_text(currLine,"1950 Vampire Vintner Wine")){
+                    famLog[$familiar[ Red-Nosed Snapper ]].actions += 1;
+                }
+
+                // Track when you get yeast, whey, or veg from cookbookbat; have to
+                //   add (3) because autumn-aton has 3x per gain while autobot has 1
+                boolean hasBoris = contains_text(currLine,"Yeast of Boris (3)");
+                boolean hasPetes = contains_text(currLine,"St. Sneaky Pete's Whey (3)");
+                boolean hasJarls = contains_text(currLine,"Vegetable of Jarlsberg (3)");
+
+                // Adding 3 instead of 1 since I'm counting total ingredients
+                if (hasBoris || hasPetes || hasJarls){
+                    famLog[$familiar[ Cookbookbat ]].actions += 3;
+                }
 
             } else if (contains_text(currLine,"acquire an effect: ")){
                 effectsGained = effectsGained+" | "+split_string(currLine,"acquire an effect: ")[1];
@@ -1097,7 +1118,17 @@ void parseLog(string runLog, string fName) {
         $familiar[ Pair of Stomping Boots ] : "runs",
         $familiar[ Red-Nosed Snapper ]      : "human musks",
         $familiar[ Cat Burglar ]            : "heists",
+        $familiar[ Vampire Vintner ]        : "wines",
+        $familiar[ Cookbookbat ]            : "ingredients",
+        $familiar[ Grey Goose ]             : "gooso stats",
     };
+
+    // NOTE FOR LATER: There are a lot of fams in unrestricted that should 
+    //   probably also be tracked. These include...
+    //     - YELLOW PUCK (freekills)
+    //     - SPACE JELLYFISH (jellies)
+    //     - HIPSTER/GOTH KID (free fights; annoying to do...)
+    //     - XO-SKELETON (hugpockets)
 
     // Populate action types for tracked familiars
     foreach fam, action in famActions {
