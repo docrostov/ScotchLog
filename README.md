@@ -2,7 +2,7 @@
 This is a Kingdom of Loathing script by me (Captain Scotch (#437479) -- DocRostov#7004 on Discord) intended to generate run logs from ascensions played by KoL players. The goal of this project is to create a more advanced version of the output from CKB's RunLogSum function, that also includes more information in the post-run session report as well as improved handling for turn-by-turn special actions. I also added a ton more comments. 
 
 To install:
-`svn checkout https://github.com/docrostov/ScotchLog/branches/master/KoLmafia`
+`git checkout https://github.com/docrostov/ScotchLog.git`
 
 ## Output
 Depending on your inputs for mafioso/resources, this script will generate 1-3 files. The files are formatted as follows:
