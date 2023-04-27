@@ -122,6 +122,7 @@ static string [string] banisherList = {
     "dirty stinkbomb"                     : "item",   // PATH: KOLHS
     "deathchucks"                         : "item",   // PATH: KOLHS
     "B. L. A. R. T. SPRAY (WIDE)"         : "skill",  // PATH: Wildfire
+    "SYSTEM SWEEP"                        : "skill",  // PATH: grey you
     "PUNT"                                : "skill",  // PATH: avatar of shadows over loathing
 
                                                       // BANISHER SKILLS via IOTM ======
@@ -345,6 +346,19 @@ record pills {
     string pillType;
 };
 
+record locket {
+    int day;
+    int turn;
+    string locketMonster;
+};
+
+record monkeyWish {
+    int day;
+    int turn;
+    string pawType;
+    string pawAction;
+};
+
 record saber {
     int day;
     int turn;
@@ -432,6 +446,7 @@ boolean isFake(string s){
 
     if (contains_text(s, "CONSUME:")){    return true; }
     if (contains_text(s, "PILLKEEPER:")){ return true; }
+    if (contains_text(s, "THE SIMIAN PAW CURLS:")){ return true; }
     if (contains_text(s, "HEIST: Stealing an item!")){ return true; }
 
     // If it didn't hit the "fake" conditions above, it has 
@@ -576,6 +591,8 @@ void parseLog(string runLog, string fName) {
     pills [int] pillsUsed; // pillkeeper tracking
     pizza [int] pizzaUsed; // pizza tracking; may expand to better record?
     saber [int] saberUsed; // saber tracking
+    monkeyWish [int] pawsUsed; // paw wish tracking
+    locket [int] locketsUsed; // combat lover's locket tracking
     
     // Separate location/familiar parsers
     familiarLog [familiar] famLog;
@@ -608,6 +625,11 @@ void parseLog(string runLog, string fName) {
     int sniff    = 0;
     int spit     = 0;
     int copier   = 0;
+
+    // Combat counters for other special events
+    int bowlingBanishes = 0;
+    int smokeBombs = 0;
+    int shadowBricks = 0;
 
     // The parser uses this so that it knows if it's currently 
     //   parsing a turn or not for certain information capture.
@@ -649,6 +671,41 @@ void parseLog(string runLog, string fName) {
                     
                     // Change the line string
                     currLine = "["+currTurn.to_string()+"] "+pillLine;
+                }
+
+                // Monkey's Paw is choice 1501!
+                if (contains_text(currLine,'Took choice 1501')){
+
+                    // Adding a row for monkey's paw turns!
+                    string pawLine = "THE SIMIAN PAW CURLS!";
+                    
+                    // In logs, the item 2 rows down from the choice is the effect/item.
+                    string pawAction = strip(splitLog[l+2]);
+
+                    // Sometimes, you visit the page but don't wish; therefore, we 
+                    //   have to test whether or not "effect:" or "item:" appear in
+                    //   the line to ensure the paw was actually used.
+                    if (contains_text(pawAction,"effect:")) {
+                        // Populate the paw directory
+                        pawsUsed[count(pawsUsed)] = new monkeyWish (currDay, currTurn, "effect", split_string(pawAction,"effect: ")[1]);
+
+                        // Change the line string
+                        currLine = "["+currTurn.to_string()+"] "+pawLine;                        
+                    }
+                    else if (contains_text(pawAction,"item:")) {
+                        // Populate the paw directory
+                        pawsUsed[count(pawsUsed)] = new monkeyWish (currDay, currTurn, "item", split_string(pawAction,"item: ")[1]);
+
+                        // Change the line string
+                        currLine = "["+currTurn.to_string()+"] "+pawLine;                        
+                    }
+
+                }
+
+                // CMC is choice 1455; testing to see how annoying this makes logs...
+                if (contains_text(currLine,'Took choice 1455')){
+                    // Change the line string in order to ensure the parser parses.
+                    currLine = "["+currTurn.to_string()+"] Visited your Cold Medicine Cabinet...";   
                 }
 
                 // Saber is choice 1387!
@@ -927,6 +984,12 @@ void parseLog(string runLog, string fName) {
             } else {
                 encounterTitle = "N/A";
             }
+            
+            // Tracking the combat lover locket monsters the user summons
+            if (newLoc == "Combat Lover's Locket") {
+                locketsUsed [count(locketsUsed)] = new locket (currDay, currTurn, encounterTitle);
+            }
+
          }
          else if (substring(currLine,0,5) == "Round"){
             // All "round" statements are filled with useful crap!
@@ -974,6 +1037,7 @@ void parseLog(string runLog, string fName) {
                                 spit     += ("%FN, SPIT ON THEM" == ss).to_int();
                                 freeRun  += isSpecial(ss,"skill",runList);
                                 skills   = skills+" | "+ss;
+                                bowlingBanishes += ("BOWL A CURVEBALL" == ss).to_int();
 
                                 // Increment spits for melodramedary
                                 if (ss == "%FN, SPIT ON THEM"){
@@ -1010,6 +1074,8 @@ void parseLog(string runLog, string fName) {
                                 sniff    += isSpecial(ss,"item",sniffList);
                                 freeRun  += isSpecial(ss,"item",runList);
                                 itemsUsed = itemsUsed+"|"+ss;
+                                smokeBombs += ("green smoke bomb" == ss).to_int();
+                                shadowBricks += ("shadow brick" == ss).to_int();
                             }
                         }
                     }
@@ -1062,8 +1128,8 @@ void parseLog(string runLog, string fName) {
                 }
                 
                 // Track when you get vampire vintner wines for tracking
-                if (contains_text(currLine,"1950 Vampire Vintner Wine")){
-                    famLog[$familiar[ Red-Nosed Snapper ]].actions += 1;
+                if (contains_text(currLine,"1950 Vampire Vintner w")){
+                    famLog[$familiar[ Vampire Vintner ]].actions += 1;
                 }
 
                 // Track when you get yeast, whey, or veg from cookbookbat; have to
@@ -1215,6 +1281,52 @@ void parseLog(string runLog, string fName) {
         runReport.append("\n====================\n");
     }
 
+    // Ensure a paw was used before doing this.
+    if (count(pawsUsed)>1){
+        // Append a header, too.
+        runReport.append("DAY\tTURN\tPAWTYPE\tWISH\n");
+
+        foreach i,currPaw in pawsUsed {
+            // I am using the "submitToLog" function so that it's easy to
+            //   convert all output into CSV/TSV. Might make that a user
+            //   defined option at some point. 
+            string[int] submitString;
+
+            submitString[1] = currPaw.day;
+            submitString[2] = currPaw.turn;
+            submitString[3] = currPaw.pawType;
+            submitString[4] = currPaw.pawAction;
+
+            submitToLog(submitString,runReport);
+        }
+        
+        // Adding a break between each resource saved
+        runReport.append("\n====================\n");
+    }
+
+   
+    // Ensure a locket was used before doing this.
+    if (count(locketsUsed)>1){
+        // Append a header, too.
+        runReport.append("DAY\tTURN\tLOCKET MONSTER\n");
+
+        foreach i,currLocket in locketsUsed {
+            // I am using the "submitToLog" function so that it's easy to
+            //   convert all output into CSV/TSV. Might make that a user
+            //   defined option at some point. 
+            string[int] submitString;
+
+            submitString[1] = currLocket.day;
+            submitString[2] = currLocket.turn;
+            submitString[3] = currLocket.locketMonster;
+
+            submitToLog(submitString,runReport);
+        }
+        
+        // Adding a break between each resource saved
+        runReport.append("\n====================\n");
+    }
+ 
     // Now, pizzas!
     if (count(pizzaUsed)>1){
         // Append a header, too.
@@ -1264,6 +1376,37 @@ void parseLog(string runLog, string fName) {
         
         // Adding a break between each resource saved
         runReport.append("\n====================\n");
+    }
+
+    // Now, miscellany!
+    if (bowlingBanishes+smokeBombs > 0) {
+        runReport.append("MISC. COUNTERS\tCOUNT\n");
+
+        // I am using the "submitToLog" function so that it's easy to
+        //   convert all output into CSV/TSV. Might make that a user
+        //   defined option at some point. 
+        string[int] submitString;
+
+        if (bowlingBanishes > 0){
+            submitString[1] = "Cosmic Bowling Ball banishes";
+            submitString[2] = bowlingBanishes;
+
+            submitToLog(submitString, runReport);
+        }
+
+        if (smokeBombs > 0){
+            submitString[1] = "Green Smoke Bombs used";
+            submitString[2] = smokeBombs;
+
+            submitToLog(submitString, runReport);
+        }
+
+        if (shadowBricks > 0){
+            submitString[1] = "Shadow Bricks used";
+            submitString[2] = shadowBricks;
+
+            submitToLog(submitString, runReport);
+        }
     }
 
     // Finally, pulls.
@@ -1382,6 +1525,9 @@ void generateRawLog(string runEndDate, int numDays){
 
     // Use a replace function to remove all end-matter.
     replace(rawLog, iPRISM, length(rawLog), "[0] FREEING THE DING DANG KING");
+
+    // Use a replace function to add a newline before CMC checks
+    replace_string(rawLog, "Took choice 1455/5", "\nTook choice 1455/5");
 
     string newLog = rawLog.to_string();
 
