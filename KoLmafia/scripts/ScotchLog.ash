@@ -1,7 +1,7 @@
 script <ScotchLog>;
 since r20267;
 
-string __scotchLog_version = "1.3";
+string __scotchLog_version = "1.4";
 
 // ==============================================================
 // ------------------------ INTRODUCTION ------------------------
@@ -82,6 +82,9 @@ void outputLinks(){
     // Putting the "links" output up top so I remember to update it.
     print_html("<strong>========= SCOTCH-LOG-PARSER v" + __scotchLog_version+" =========</strong>");
 	print_html("");
+    print_html("<a href=\"https://loathers.net\"><strong>loathers dot net</strong></a>");
+	print_html("    >>> <font color='purple'>Website where Captain Scotch & others write IOTM reviews and hold fun contests!</font>");
+	print_html("");
     print_html("<a href=\"https://discord.gg/tbUCRT5\"><strong>The Ascension Speed Society Discord Server</strong></a>");
 	print_html("    >>> <font color='purple'>Speed ascension server with helpful tips & tricks</font>");
 	print_html("");
@@ -152,6 +155,9 @@ static string [string] banisherList = {
     "Daily Affirmation: Be a Mind Master" : "item",   // 2017 new-you affirmations
     "tryptophan dart"                     : "item",   // 2018 mechanical elf
     "human musk"                          : "item",   // 2019 red-nosed snapper
+    "stuffed yam stinkbomb"               : "item",   // 2024 mayam calendar
+    "handful of split pea soup"           : "item",   // 2024 peace turkey
+    "anchor bomb"                         : "item",   // 2024 TakerSpace
 };
 
 static string [string] freeKillList = {
@@ -171,6 +177,8 @@ static string [string] freeKillList = {
     "CHEST X-RAY"                         : "skill",  // 2019 lil doc bag
     "SHOCKING LICK"                       : "skill",  // 2021 power seed
     "SPIT JURASSIC ACID"                  : "skill",  // 2022 jurassic parka
+    "DARTS: AIM FOR THE BULLSEYE"         : "skill",  // 2024 everfull darts
+    "ASSERT YOUR AUTHORITY"               : "skill",  // 2024 clan VIP item 
 
                                                       // FREEKILL ITEMS via IOTM =======
     "superduperheated metal"              : "item",   // 2015 that 70s volcano
@@ -218,6 +226,7 @@ static string [string] copyList = {
     "LOV Enamorang"                       : "item",   // 2017 LOV tunnel
     "LECTURE ON RELATIVITY"               : "skill",  // 2019 pocket professor
     "BACK-UP TO YOUR LAST ENEMY"          : "skill",  // 2021 backup camera
+    "%FN, LAY AN EGG"                     : "skill",  // 2024 chest mimic
 
 
 };
@@ -279,6 +288,11 @@ static string [string] runList = {
     "FEEL HATRED"                         : "skill",  // 2021 emotion chip
     "SHOW YOUR BORING FAMILIAR PICTURES"  : "skill",  // 2021 familiar scrapbook
     "BOWL A CURVEBALL"                    : "skill",  // 2022 cosmic bowling ball
+    "stuffed yam stinkbomb"               : "item",   // 2024 mayam calendar
+    "handful of split pea soup"           : "item",   // 2024 peace turkey
+    "anchor bomb"                         : "item",   // 2024 TakerSpace
+    "BOWL A CURVEBALL"                    : "skill",  // 2024 cosmic bowling ball
+    "BLOW THE GREEN CANDLE"               : "skill",  // 2024 roman candelabra
 	
                                                       // PATH & IOTM FREE-RUNS =========
     "ENSORCEL"                            : "skill",  // PATH: dark gyffte
@@ -628,8 +642,10 @@ void parseLog(string runLog, string fName) {
 
     // Combat counters for other special events
     int bowlingBanishes = 0;
-    int smokeBombs = 0;
+    int elgreenRuns = 0;
+    int elredKills = 0;
     int shadowBricks = 0;
+    int dartPerks = 0;
 
     // The parser uses this so that it knows if it's currently 
     //   parsing a turn or not for certain information capture.
@@ -743,6 +759,12 @@ void parseLog(string runLog, string fName) {
                 // Also, this -isn't- fake -- I'm transforming Doc Awk's office.
                 if (contains_text(currLine, 'Visiting Dr. Awkward')){
                     currLine = "["+currTurn.to_string()+"] Dr. Awkward's Office";
+                }
+
+                // Dart perks are annoying and fuck up the logs.
+                if (contains_text(currLine, 'Encounter: Dart Perks')){
+                    currLine = "daaaaaaart perrrrrrrrrrrrrrrrrks";
+                    dartPerks += 1;
                 }
             }
         }
@@ -1054,6 +1076,11 @@ void parseLog(string runLog, string fName) {
                                     famLog[$familiar[ Grey Goose ]].actions += 1;
                                 }
 
+                                // Increment screeching for eagle
+                                if (contains_text(ss, "%FN, RELEASE THE PATRIOTIC SCREECH")){
+                                    famLog[$familiar[ Patriotic Eagle ]].actions += 1;
+                                }
+
                                 // Increment runs for boots & banders. Note that 
                                 //   we also have to adjust to ensure they were 
                                 //   actually -free- runs, which we do up top.
@@ -1074,8 +1101,8 @@ void parseLog(string runLog, string fName) {
                                 sniff    += isSpecial(ss,"item",sniffList);
                                 freeRun  += isSpecial(ss,"item",runList);
                                 itemsUsed = itemsUsed+"|"+ss;
-                                smokeBombs += ("green smoke bomb" == ss).to_int();
                                 shadowBricks += ("shadow brick" == ss).to_int();
+                                famLog[$familiar[ Peace Turkey ]].actions += ("handful of split pea soup" == ss).to_int();
                             }
                         }
                     }
@@ -1087,6 +1114,7 @@ void parseLog(string runLog, string fName) {
                 origMonster = origMonster+" | "+encounterTitle;
                 encounterTitle = split_string(currLine,"your opponent becomes ")[1];
             }
+
          }
          else if (substring(currLine,0,5) == "After"){
              // Capturing after-battle stat changes. 
@@ -1145,6 +1173,10 @@ void parseLog(string runLog, string fName) {
 
             } else if (contains_text(currLine,"acquire an effect: ")){
                 effectsGained = effectsGained+" | "+split_string(currLine,"acquire an effect: ")[1];
+                
+                // Handling darts freekills + elg freeruns here
+                if (contains_text(currLine, "Everything Looks Red (")) elredKills += 1;
+                if (contains_text(currLine, "Everything Looks Green (")) elgreenRuns += 1;
             }
                 
          }
@@ -1184,9 +1216,11 @@ void parseLog(string runLog, string fName) {
         $familiar[ Pair of Stomping Boots ] : "runs",
         $familiar[ Red-Nosed Snapper ]      : "human musks",
         $familiar[ Cat Burglar ]            : "heists",
+        $familiar[ Patriotic Eagle ]        : "screeches",
         $familiar[ Vampire Vintner ]        : "wines",
         $familiar[ Cookbookbat ]            : "ingredients",
         $familiar[ Grey Goose ]             : "gooso stats",
+        $familiar[ Peace Turkey ]           : "pea banishes",
     };
 
     // NOTE FOR LATER: There are a lot of fams in unrestricted that should 
@@ -1379,7 +1413,7 @@ void parseLog(string runLog, string fName) {
     }
 
     // Now, miscellany!
-    if (bowlingBanishes+smokeBombs > 0) {
+    if (bowlingBanishes + elgreenRuns + shadowBricks + elredKills + dartPerks > 0) {
         runReport.append("MISC. COUNTERS\tCOUNT\n");
 
         // I am using the "submitToLog" function so that it's easy to
@@ -1388,25 +1422,41 @@ void parseLog(string runLog, string fName) {
         string[int] submitString;
 
         if (bowlingBanishes > 0){
-            submitString[1] = "Cosmic Bowling Ball banishes";
+            submitString[1] = "Cosmic Bowling Ball banishes:";
             submitString[2] = bowlingBanishes;
 
             submitToLog(submitString, runReport);
         }
 
-        if (smokeBombs > 0){
-            submitString[1] = "Green Smoke Bombs used";
-            submitString[2] = smokeBombs;
+        if (elgreenRuns > 0){
+            submitString[1] = "Everything Looks Green freeruns used:";
+            submitString[2] = elgreenRuns;
+
+            submitToLog(submitString, runReport);
+        }
+
+        if (elredKills > 0){
+            submitString[1] = "Everything Looks Red freekills used:";
+            submitString[2] = elredKills;
 
             submitToLog(submitString, runReport);
         }
 
         if (shadowBricks > 0){
-            submitString[1] = "Shadow Bricks used";
+            submitString[1] = "Shadow Bricks used:";
             submitString[2] = shadowBricks;
 
             submitToLog(submitString, runReport);
         }
+
+        if (dartPerks > 0){
+            submitString[1] = "Dart Perks:";
+            submitString[2] = dartPerks;
+
+            submitToLog(submitString, runReport);
+        }
+
+        runReport.append("\n====================\n");
     }
 
     // Finally, pulls.
@@ -1598,6 +1648,9 @@ void executeCommand(string cmd){
         print_html("<strong>========= SCOTCH-LOG-PARSER v" + __scotchLog_version+" =========</strong>");
         print("Examining logs starting at "+ascDate+" and going back "+ascDays+" days.");
         generateRawLog(ascDate, ascDays);
+        print("");
+        print("BEEP BOOP BEEP. I'm done!");
+        print("Check your /data/ folder within your KoLMafia folder for your log! (Also, have a good day!)");
     }
     else if (substring(cmd,0,5) == "mafio"){
         // If the user is sending a "mafioso" command, set the
