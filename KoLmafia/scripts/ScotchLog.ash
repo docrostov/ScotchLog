@@ -329,7 +329,7 @@ static string [string] kingFreedList ={
 static string [string] runStartList ={
     "Beginning New Ascension"             : "default",
     "Ascend as a"                         : "backup",
-    "tutorial.php"                        : "firstRun",
+    // "tutorial.php"                        : "firstRun", // Removing this so we stop catching Garbo strays.
     "use 1 nest egg"                      : "firstRun"
 };
 
