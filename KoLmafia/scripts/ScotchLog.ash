@@ -869,7 +869,7 @@ void parseLog(string runLog, string fName) {
             //   fake events, present in this exact line!
             if (currLine == "[0] FREEING THE DING DANG KING"){
                 // Trying to fix the error where Goo runs show a 0 turn ending.
-                print("Parsing a goo run, it looks like?", "blue");
+                print("Parsing a weird path, it looks like?", "green");
             } else {
                 if (currTurn == grabNumber(currLine) && !isFake(split_string(currLine,"] ")[1])){
                     freeTurn = true;
