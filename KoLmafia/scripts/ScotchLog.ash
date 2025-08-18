@@ -144,6 +144,7 @@ static string [string] banisherList = {
     "SHOW YOUR BORING FAMILIAR PICTURES"  : "skill",  // 2021 familiar scrapbook
     "BOWL A CURVEBALL"                    : "skill",  // 2022 cosmic bowling ball
     "MONKEY SLAP"                         : "skill",  // 2023 cursed monkey's paw
+    "PUNCH OUT YOUR FOE"                  : "skill",  // 2025 leprecondo
 	
                                                       // BANISHER ITEMS via IOTM =======
     "divine champagne popper"             : "item",   // 2008 libram of divine favors
@@ -227,6 +228,8 @@ static string [string] copyList = {
     "LECTURE ON RELATIVITY"               : "skill",  // 2019 pocket professor
     "BACK-UP TO YOUR LAST ENEMY"          : "skill",  // 2021 backup camera
     "%FN, LAY AN EGG"                     : "skill",  // 2024 chest mimic
+    "BLOW THE PURPLE CANDLE"              : "skill",  // 2024 roman candelabra
+    "CREATE AN AFTERIMAGE"                : "skill",  // 2025 leprecondo
 
 
 };
@@ -291,8 +294,8 @@ static string [string] runList = {
     "stuffed yam stinkbomb"               : "item",   // 2024 mayam calendar
     "handful of split pea soup"           : "item",   // 2024 peace turkey
     "anchor bomb"                         : "item",   // 2024 TakerSpace
-    "BOWL A CURVEBALL"                    : "skill",  // 2024 cosmic bowling ball
     "BLOW THE GREEN CANDLE"               : "skill",  // 2024 roman candelabra
+    "PUNCH OUT YOUR FOE"                  : "skill",  // 2025 leprecondo
 	
                                                       // PATH & IOTM FREE-RUNS =========
     "ENSORCEL"                            : "skill",  // PATH: dark gyffte
@@ -322,6 +325,7 @@ static string [string] runList = {
 static string [string] kingFreedList ={
     "Took choice 1089/30: Perform Service": "CS",
     "Took choice 1054/1: Yep"             : "ED",
+    "Took choice 1565/1: Free Ralph"      : "SEA",
     "Freeing King Ralph"                  : "default"
 };
 
