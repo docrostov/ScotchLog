@@ -1030,9 +1030,11 @@ void parseLog(string runLog, string fName) {
                 continue;
             }
             if (length(split_string(currLine,": ")[1]) > length(myName)){
-                if (substring(split_string(currLine,": ")[1],0,length(myName)) == myName){
+                if (substring(split_string(currLine,": ")[1],0,length(myName)+1) == myName+" "){
                     // This detects if it's a statement about you! And this cuts out
-                    //   the specific statement after "round" & your name
+                    //   the specific statement after "round" & your name. The space
+                    //   following your name is missing in pocket familiars, but there's
+                    //   nothing worth recording from combat in that path.
                     roundStmt = split_string(currLine,myName+" ")[1];
 
                     // Now to split out useful pieces; these can be:
